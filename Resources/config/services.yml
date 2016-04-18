@@ -1,9 +1,15 @@
 parameters:
+    aws4auth.user_class: PC\Aws4AuthBundle\Entity\AwsUser
 
 services:
-  aws4auth:
-    class: PC\Aws4AuthBundle\EventListener\RequestListener
-    arguments: ["@request_stack", "@annotation_reader"]
-    tags:
-      - { name: kernel.event_subscriber, event: kernel.request, method: onCoreRequest, priority: -1 }
-#    scope: request
+    aws4auth.security.authentication.provider:
+        class: PC\Aws4AuthBundle\Security\Authentication\Provider\Aws4Provider
+        arguments:
+            - '' # User Provider
+            - '%kernel.cache_dir%/security/nonces'
+        public: false
+
+    aws4auth.security.authentication.listener:
+        class: PC\Aws4AuthBundle\Security\Firewall\Aws4Listener
+        arguments: ['@security.token_storage', '@security.authentication.manager']
+        public: false
