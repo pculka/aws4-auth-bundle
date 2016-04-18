@@ -34,7 +34,7 @@ class Aws4Listener implements ListenerInterface
         //$aws4Regex = '/([^"]+) Credential=([^"]+), SignedHeaders=([^"]+), Signature=([a-z9-0^"]+)/';
         // AWS4-HMAC-SHA256 Credential=key1/20160418/us-east-1/S3/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=9f48d763c1cb38c08d5ae52ea27043dca987a66d3b289fb3dedb606305fd9d55
         $aws4Regex = '/AWS4-HMAC-SHA256 Credential=(.+), SignedHeaders=([a-z\-;]+), Signature=([a-z0-9]+)/';
-        var_dump($request->headers->get('Authorization'));
+
 
         if (!$request->headers->has('Authorization') || 1 !== preg_match($aws4Regex, $request->headers->get('Authorization'), $matches)) {
             return;
@@ -43,9 +43,6 @@ class Aws4Listener implements ListenerInterface
         list($credential['key'], $credential['date'], $credential['zone'], $credential['service']) = explode('/', $matches[1]);
         $signedHeaders = explode(';', $matches[2]);
         $signature = $matches[3];
-
-        
-
 
         //$password = ...;
 
