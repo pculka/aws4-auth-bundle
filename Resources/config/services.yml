@@ -2,9 +2,8 @@ parameters:
 
 services:
   aws4auth:
-    class: PC\Aws4AuthBundle\Listener\RequestListener
-    arguments:
-      - @request_stack
+    class: PC\Aws4AuthBundle\EventListener\RequestListener
+    arguments: ["@request_stack", "@annotation_reader"]
     tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onCoreRequest, priority: -1 }
-    scope: request
+      - { name: kernel.event_subscriber, event: kernel.request, method: onCoreRequest, priority: -1 }
+#    scope: request
