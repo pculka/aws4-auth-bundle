@@ -7,9 +7,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Aws\Signature\SignatureV4;
-#use AppBundle\Security\Authentication\Token\WsseUserToken;
 
 class Aws4Listener implements ListenerInterface
 {
@@ -91,10 +88,10 @@ class Aws4Listener implements ListenerInterface
         $kSigning = hash_hmac("sha256", "aws4_request", $kService, true); // this is the key we use to sign the request
 
         $calculatedSignature = hash_hmac("sha256", $stringToSign, $kSigning);
-        var_dump($calculatedSignature);
-        var_dump($signature);
 
-        //$password = ...;
+        if ($calculatedSignature == $signature) {
+            // return the proper Token
+        }
 
         // By default deny authorization - we do not allow for authentication chains for now
         // if required, use OAUTH2 instead
