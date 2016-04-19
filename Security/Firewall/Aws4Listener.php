@@ -46,23 +46,17 @@ class Aws4Listener implements ListenerInterface
         $signedHeaders = explode(';', $matches[2]);
         $signature = $matches[3];
 
-        // Pseudocode for deriving a signing key
-        // TODO: GET THE SECRET FROM THE USER WITH CREDENTIAL KEY
-        $kSecret = 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY';
-
-        $kDate = hash_hmac("sha256", $credential['date'], "AWS4".$kSecret, true);
-        $kRegion = hash_hmac("sha256", $credential['region'], $kDate, true);
-        $kService = hash_hmac("sha256", $credential['service'], $kRegion, true);
-        $kSigning = hash_hmac("sha256", "aws4_request", $kService, true); // this is the key we use to sign the request
-
-        // create Canonical Headers
+        // Task 1: create Canonical Request
         $originalHeaders = array();
         sort($signedHeaders, SORT_STRING);
         foreach ($signedHeaders as $signedHeader) {
+            // todo: maybe add $ro = preg_replace('/\s+/', ' ',$row['message']);
+            // though in in the request the signedHeaders should be properly trimmed already
             $originalHeaders[] = strtolower($signedHeader).':'.trim($request->headers->get($signedHeader));
         }
-
-        $canonicalHeaders = implode("\n", $originalHeaders);
+        // don't forget newline after implode, as the headers are key:value\n
+        // therefore a newline exists at the end of the canonicalHeaders block in the canonicalRequest
+        $canonicalHeaders = implode("\n", $originalHeaders)."\n";
 
         $parsedUrl = parse_url($request->getUri());
         $canonicalUri = (trim($parsedUrl['path']) == "")? "/" : $parsedUrl['path'];
@@ -78,13 +72,27 @@ class Aws4Listener implements ListenerInterface
             ;
         $hashedCanonicalRequest = strtolower(hash('sha256', $canonicalRequest));
         // todo: check $hashedPayload == $request->headers->get('x-amz-content-sha256'));
-//        var_dump($signature);
-//        var_dump($canonicalRequest);
-//        var_dump($hashedCanonicalRequest);
 
-        // $ro = preg_replace('/\s+/', ' ',$row['message']);
+        // Task 2: Create a String to Sign
+        $stringToSign =
+            "AWS4-HMAC-SHA256\n".
+            $request->headers->get('x-amz-date')."\n".
+            $credential['date'].'/'.$credential['region'].'/'.$credential['service'].'/aws4_request'."\n".
+            $hashedCanonicalRequest
+            ;
 
+        // Task 3 : Calculate the AWS Signature
+        // TODO: GET THE SECRET FROM THE USER WITH CREDENTIAL KEY
+        $kSecret = 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY';
 
+        $kDate = hash_hmac("sha256", $credential['date'], "AWS4".$kSecret, true);
+        $kRegion = hash_hmac("sha256", $credential['region'], $kDate, true);
+        $kService = hash_hmac("sha256", $credential['service'], $kRegion, true);
+        $kSigning = hash_hmac("sha256", "aws4_request", $kService, true); // this is the key we use to sign the request
+
+        $calculatedSignature = hash_hmac("sha256", $stringToSign, $kSigning);
+        var_dump($calculatedSignature);
+        var_dump($signature);
 
         //$password = ...;
 
