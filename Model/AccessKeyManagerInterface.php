@@ -5,7 +5,7 @@ namespace PC\Aws4AuthBundle\Model;
 interface AccessKeyManagerInterface
 {
     /**
-     * Returns an empty group instance.
+     * Returns an empty Access Key instance.
      *
      * @param string $accessKey
      * @return AccessKeyInterface
@@ -13,7 +13,7 @@ interface AccessKeyManagerInterface
     public function createAccessKey($accessKey);
 
     /**
-     * Deletes a group.
+     * Deletes an Access Key.
      *
      * @param AccessKeyInterface $accessKey
      * @return void
@@ -21,7 +21,7 @@ interface AccessKeyManagerInterface
     public function deleteAccessKey(AccessKeyInterface $accessKey);
 
     /**
-     * Finds one group by the given criteria.
+     * Finds one Access Key by the given criteria.
      *
      * @param array $criteria
      * @return AccessKeyInterface
@@ -37,7 +37,7 @@ interface AccessKeyManagerInterface
     public function findAccessKeyByKey($key);
 
     /**
-     * Returns the AccessKey's fully qualified class name.
+     * Returns the Access Key FQCN.
      *
      * @return string
      */
