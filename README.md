@@ -62,3 +62,10 @@ security:
 
 ### Step 5: Configure the AWS4AuthBundle
 
+```yml
+# app/config/config.yml
+
+pc_aws4_auth:
+    user_class: \Acme\Bundle\Entity\User
+
+```
