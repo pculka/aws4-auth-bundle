@@ -1,4 +1,4 @@
 parameters:
-    pc_aws4_auth.accesskey_manager.class: PC\Aws4AuthBundle\Doctrine\AccessKeyManager
+    aws4auth.accesskey_manager.class: PC\Aws4AuthBundle\Doctrine\AccessKeyManager
 
 services:
