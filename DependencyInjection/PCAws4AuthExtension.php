@@ -29,16 +29,21 @@ class PCAws4AuthExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         foreach ($config as $key => $value) {
-            $this->parseNode('aws4auth.' . $key, $value);
+            $this->parseNode('pc_aws4_auth.' . $key, $value);
         }
 
-        $container->setParameter('aws4auth', $config);
+        $container->setParameter('pc_aws4_auth', $config);
 
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yml');
+        
+        $loader->load('access_keys.yml');
+//        if (!empty($config['access_keys'])) {
+//
+//        }
 
 
     }

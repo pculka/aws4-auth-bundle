@@ -57,7 +57,7 @@ class Aws4Factory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'aws4auth';
+        return 'pc_aws4_auth';
     }
 
     public function addConfiguration(NodeDefinition $builder)

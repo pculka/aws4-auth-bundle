@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('aws4auth', 'array');
+        $rootNode = $treeBuilder->root('pc_aws4_auth', 'array');
 
         $rootNode
             ->children()
