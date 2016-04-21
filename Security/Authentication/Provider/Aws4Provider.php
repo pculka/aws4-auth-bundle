@@ -17,7 +17,7 @@ class Aws4Provider implements AuthenticationProviderInterface
     public function __construct(UserProviderInterface $userProvider, $cacheDir)
     {
         $this->userProvider = $userProvider;
-        $this->cacheDir     = $cacheDir;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -38,11 +38,11 @@ class Aws4Provider implements AuthenticationProviderInterface
      * Checks whether this provider supports the given token.
      *
      * @param TokenInterface $token A TokenInterface instance
-     *
      * @return bool true if the implementation supports the Token, false otherwise
      */
     public function supports(TokenInterface $token)
     {
-        // TODO: Implement supports() method.
+        
+        // return false;
     }
 }
