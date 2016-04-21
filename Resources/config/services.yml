@@ -1,15 +1,15 @@
 parameters:
-    aws4auth.user_class: PC\Aws4AuthBundle\Entity\AwsUser
+    pc_aws4_auth.user_class: PC\Aws4AuthBundle\Entity\AwsUser
 
 services:
-    aws4auth.security.authentication.provider:
+    pc_aws4_auth.security.authentication.provider:
         class: PC\Aws4AuthBundle\Security\Authentication\Provider\Aws4Provider
         arguments:
             - '' # User Provider
             - '%kernel.cache_dir%/security/nonces'
         public: false
 
-    aws4auth.security.authentication.listener:
+    pc_aws4_auth.security.authentication.listener:
         class: PC\Aws4AuthBundle\Security\Firewall\Aws4Listener
         arguments: ['@security.token_storage', '@security.authentication.manager']
         public: false
